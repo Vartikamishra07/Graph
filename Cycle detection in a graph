@@ -1,0 +1,42 @@
+class Solution 
+{
+    private:
+    bool dfs(int node , vector<int>&adj , int &path[] ,  int &path_vis)
+    {
+       path[node]=1;
+       path_vis[node]=1;
+       //traverse for adjacent nodes
+       for(auto it:adj[node])
+       {
+           //when the node is not visited
+           if(!vis[it])
+           {
+               if(dfs(node , adj , path , path_vis)==true) return true;
+           }
+           //if the node has been previously visited
+           //but it has to be visited on the same path for cycle detection
+           else if(path_vis[node])
+           {
+               return true;
+           }
+       }
+       path_vis[node]=false;
+       return false;
+    }
+
+public:
+    vector<int> detect_cycle(int v, <vector<int>>adj[]) 
+    {
+        int vis[v]={0};
+        int path_vis[v]={0};
+
+        for(int i=0;i<v;i++)
+        {
+           if(!vis[i])
+           {
+               if(dfs(i,adj,vis,path_vis)==true) return true;
+           }
+        }
+        return false;
+    }
+};
