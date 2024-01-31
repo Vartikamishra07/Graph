@@ -1,0 +1,53 @@
+//If cycle is detected then it is not possible to complete the course and hence return false , cycle will be detected if topological sort is not fully complete which implies
+length of topological sort is not equal to total number of vertices
+
+class Solution 
+{
+public:
+    bool canFinish(int n, vector<vector<int>>& pre) 
+    {
+       vector<int>adj[n];
+       for(auto it:pre)
+       {
+           adj[it[0]].push_back(it[1]);
+       }
+       int indegree[n];
+       for(int i=0;i<n;i++)
+       {
+           indegree[i]=0;
+       }
+    for(int i=0;i<n;i++)
+    {
+        for(auto it:adj[i])
+        {
+            indegree[it]++;
+        } 
+    }
+    queue<int>q;
+    for(int i=0;i<n;i++)
+    {
+        if(indegree[i]==0)
+        {
+            q.push(i);
+        }
+    }
+    int count=0;
+    while(!q.empty())
+    {
+        int node=q.front();
+        q.pop();
+        count++;
+        for(auto it:adj[node])
+        {
+            indegree[it]--;
+            if(indegree[it]==0)
+            {
+                q.push(it);
+            }
+        }
+    }
+    if(count==n) return true; // no cycle since whole topological sort has been printed
+    return false;  // cycle detected since incomplete cycle is present
+    }
+};
+
